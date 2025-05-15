@@ -15,7 +15,10 @@ interface UseGetCharactersReturn {
   };
 }
 
-const useGetCharacters = (page: number = 1): UseGetCharactersReturn => {
+const useGetCharacters = (
+  page: number = 1,
+  name?: string
+): UseGetCharactersReturn => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +35,7 @@ const useGetCharacters = (page: number = 1): UseGetCharactersReturn => {
     const fetchCharacters = async () => {
       try {
         setLoading(true);
-        const response = await getCharacters(page);
+        const response = await getCharacters(page, name);
         const { results, info } = response.data;
         setCharacters(results);
         setPagination(info);
@@ -45,7 +48,7 @@ const useGetCharacters = (page: number = 1): UseGetCharactersReturn => {
     };
 
     fetchCharacters();
-  }, [page]);
+  }, [page, name]);
 
   return {
     characters,

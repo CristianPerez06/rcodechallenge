@@ -4,8 +4,18 @@ import { PaginatedResponse } from "../interfaces/pagination";
 
 const BASE_PATH = "/character";
 
-export const getCharacters = (page: number) =>
-  api.get<PaginatedResponse<Character[]>>(`${BASE_PATH}?page=${page}`);
+export const getCharacters = (page: number, name?: string) => {
+  const buildUrl = (page: number, name?: string) => {
+    const baseUrl = `${BASE_PATH}?page=${page}`;
+    const nameParam = name ? `&name=${name}` : "";
+    return `${baseUrl}${nameParam}`;
+  };
 
-export const getCharacter = (id: number) =>
+  const url = buildUrl(page, name);
+
+  return api.get<PaginatedResponse<Character[]>>(url);
+};
+
+export const getCharacter = (id: number) => {
   api.get<Character>(`${BASE_PATH}/${id}`);
+};
